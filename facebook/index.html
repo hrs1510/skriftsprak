@@ -1,56 +1,207 @@
+<!-- Input unit dropdown enabled, auto-switches output unit, conversion works both ways -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Sign Up</title>
-    <link rel="stylesheet" href="css/style.css">
-    
-    <script src="./scripts/index.js" type="text/javascript"></script>
-
+  <meta charset="UTF-8">
+  <title>Temperature Converter</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .converter-container {
+      display: flex;
+      align-items: center;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      border: 1px solid #b3c6e0;
+      background: #fff;
+      padding: 32px 36px;
+      gap: 18px;
+      width: fit-content;
+    }
+    .unit-box {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      border: 1px solid #b3c6e0;
+      border-radius: 8px;
+      background: #f7fbff;
+      width: 140px;
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      gap: 0;
+    }
+    .unit-input {
+      border: none;
+      border-bottom: 1px solid #b3c6e0;
+      border-radius: 8px 8px 0 0;
+      padding: 10px 12px;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      background: transparent;
+      text-align: center;
+      outline: none;
+      margin: 0;
+      transition: border-color 0.2s;
+    }
+    .unit-input:focus {
+      border-color: #5b9bd5;
+    }
+    .unit-select {
+      border: none;
+      border-radius: 0 0 8px 8px;
+      padding: 7px 10px;
+      font-size: 15px;
+      width: 100%;
+      box-sizing: border-box;
+      background: #dbe6f6;
+      color: #222;
+      outline: none;
+      margin: 0;
+      appearance: none;
+      transition: border-color 0.2s;
+    }
+    .unit-select:focus {
+      outline: none;
+    }
+    .convert-btn {
+      padding: 10px 22px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(90deg, #5b9bd5 0%, #6dd5ed 100%);
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(91,155,213,0.10);
+      transition: background 0.2s, box-shadow 0.2s;
+      margin: 0 18px;
+      height: 80px;
+      align-self: stretch;
+    }
+    .convert-btn:hover {
+      background: linear-gradient(90deg, #6dd5ed 0%, #5b9bd5 100%);
+      box-shadow: 0 4px 16px rgba(91,155,213,0.15);
+    }
+    .output-box {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      border: 1px solid #b3c6e0;
+      border-radius: 8px;
+      background: #f7fbff;
+      width: 140px;
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      gap: 0;
+    }
+    .output-value {
+      border: none;
+      border-bottom: 1px solid #b3c6e0;
+      border-radius: 8px 8px 0 0;
+      padding: 10px 12px;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      background: transparent;
+      text-align: center;
+      color: #333;
+      min-height: 40px;
+      margin: 0;
+    }
+    .output-select {
+      border: none;
+      border-radius: 0 0 8px 8px;
+      padding: 7px 10px;
+      font-size: 15px;
+      width: 100%;
+      box-sizing: border-box;
+      background: #dbe6f6;
+      color: #222;
+      outline: none;
+      margin: 0;
+      appearance: none;
+      transition: border-color 0.2s;
+    }
+    .output-select:focus {
+      outline: none;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="main-container">
-        <!-- <div class="header">
-            <div class="header-text">ƒacebook</div>
-            <div>
-                <form class="login-form">
-                    <div class="form-group">
-                        <label for="email">Email or phone</label>
-                        <input type="text" id="email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
-                    </div>
-                    <button type="submit" class="login-button">Log In</button>
-                </form>
-            </div>
-        </div> -->
-        <div>
-            <div>
-                <div class="header-text">ƒacebook</div>
-                <p>Facebook helps you connect and share with the people in your life</p>
-            </div>
-            <div class="container">
-                <div class="login-section">
-                    <form class="login-form">
-                        <input type="text" id="login-email" name="login-email"
-                            placeholder="Email address or phone number">
-                        <input type="password" id="login-password" name="login-password" placeholder="Password">
-                        <button type="submit" class="login-button">Log in</button>
-                    </form>
-                    <a href="#" class="forgot-link">Forgotten password?</a>
-                    <div class="divider"></div>
-                    <button id="btnCreateAccount" class="create-account-button">Create new account</button>
-                </div>
-            </div>
-        </div>
+  <div class="converter-container">
+    <div class="unit-box">
+      <input class="unit-input" type="text" id="tempInput" placeholder="Enter value" />
+      <select class="unit-select" id="inputUnit" onchange="syncUnits()">
+        <option value="C">Celsius (°C)</option>
+        <option value="F">Fahrenheit (°F)</option>
+      </select>
+    </div>
+    <button class="convert-btn" onclick="convertTemp()">Convert</button>
+    <div class="output-box">
+      <span class="output-value" id="tempOutput"></span>
+      <select class="output-select" id="outputUnit" onchange="syncUnits()">
+        <option value="F">Fahrenheit (°F)</option>
+        <option value="C">Celsius (°C)</option>
+      </select>
+    </div>
+  </div>
 
+  <script>
+    // Synchronize input/output units so they are always opposite
+    function syncUnits() {
+      const inputUnit = document.getElementById('inputUnit');
+      const outputUnit = document.getElementById('outputUnit');
+      if (event.target.id === 'inputUnit') {
+        outputUnit.value = inputUnit.value === 'C' ? 'F' : 'C';
+      } else if (event.target.id === 'outputUnit') {
+        inputUnit.value = outputUnit.value === 'C' ? 'F' : 'C';
+      }
+    }
 
+    // Set initial state
+    document.getElementById('inputUnit').value = 'C';
+    document.getElementById('outputUnit').value = 'F';
 
+    function convertTemp() {
+      const valueStr = document.getElementById('tempInput').value.trim();
+      const inputUnit = document.getElementById('inputUnit').value;
+      const outputUnit = document.getElementById('outputUnit').value;
+      const outputBox = document.getElementById('tempOutput');
+
+      // Convert string to number
+      const value = parseFloat(valueStr);
+
+      if (valueStr === '' || isNaN(value)) {
+        outputBox.textContent = 'Enter a valid number';
+        return;
+      }
+      if (!isNaN(value)) {
+    const historyList = document.getElementById('historyList');
+    const li = document.createElement('li');
+    li.textContent = `${valueStr} ${inputUnit} → ${outputBox.textContent}`;
+    historyList.appendChild(li);
+  }
+
+      let result;
+      if (inputUnit === 'C' && outputUnit === 'F') {
+        result = (value * 9/5) + 32;
+        outputBox.textContent = result.toFixed(2) + ' °F';
+      } else if (inputUnit === 'F' && outputUnit === 'C') {
+        result = (value - 32) * 5/9;
+        outputBox.textContent = result.toFixed(2) + ' °C';
+      } else {
+        outputBox.textContent = 'Invalid conversion';
+      }
+    }
+  </script>
 </body>
-
 </html>
